@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptography</title>
+    <style>
+        .container {
+            padding: 10px;
+        }
+        .wrapper {
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+        }
+        #input {
+            padding: 5px;
+            margin: 0 10px;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="reply"></div>
+        <br>
+        <p>Leave a Reply</p>
+        <div class="wrapper">
+            <input type="text" id="input">
+            <button onclick="check()" class="btn">Input</button>
+        </div>
+    </div>
+
+    <script>
+        let sentences = document.getElementById('input').value;
+        const BANNED = ['shit', 'fuck', 'stupid', 'moron', 'idiot', 'suck', 'dumb'];
+
+        function check() {
+            const styleHyphenFormat = (sentences) => {
+                const replaceWord = (match) => {
+                    let re = new RegExp("[a-z]", "i");
+                    let min = 'A'.charCodeAt(0);
+                    let max = 'Z'.charCodeAt(0);
+                    let factor = 13;
+                    let result = "";
+
+                    for (let i = 0; i < match.length; i++) {
+                        result += (re.test(match[i]) ?
+                            String.fromCharCode((match.charCodeAt(i) - min + factor) % (max - min + 1) +
+                                min) : match[i]);
+                    }
+                    return match.replace(match, result);
+                }
+                const filter = new RegExp(BANNED.join('|'), 'gi')
+                return sentences.replace(filter, replaceWord);
+            }
+            document.getElementById('reply').innerHTML = styleHyphenFormat(sentences).toUpperCase();
+        }
+    </script>
+</body>
+
+</html>
