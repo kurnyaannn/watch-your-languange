@@ -22,6 +22,7 @@
         #reply {
             text-align: center;
             font-weight: bold;
+            font-size: x-large;
             padding: 10px 0;
         }
     </style>
@@ -32,7 +33,7 @@
         <div class="wrapper">
             <div id="reply"></div>
             <textarea type="text" id="input" rows="4" cols="50"></textarea>
-            <button onclick="check()" class="btn">Input</button>
+            <button onclick="check()" class="btn">Submit</button>
         </div>
     </div>
 
@@ -41,7 +42,7 @@
         const BANNED = ['shit', 'fuck', 'stupid', 'moron', 'idiot', 'suck', 'dumb'];
 
         function check() {
-            const analyzeSentence = (sentences) => {
+            const analyzedSentences = (sentences) => {
                 const replaceWord = (match) => {
                     let re = new RegExp("[a-z]", "i");
                     let min = 'A'.charCodeAt(0);
@@ -52,13 +53,14 @@
                     for (let i = 0; i < match.length; i++) {
                         result += (re.test(match[i]) ?
                             String.fromCharCode((match.charCodeAt(i) - min + factor) % (max - min + 1) + min) : match[i]);
+                        console.log(min);
                     }
                     return match.replace(match, result);
                 }
                 const filter = new RegExp(BANNED.join('|'), 'gi')
                 return sentences.replace(filter, replaceWord);
             }
-            document.getElementById("reply").innerHTML = analyzeSentence(sentences).toUpperCase();
+            document.getElementById('reply').innerHTML = analyzedSentences(sentences).toUpperCase();
         }
     </script>
 </body>
